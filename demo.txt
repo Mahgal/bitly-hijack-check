@@ -1,0 +1,18 @@
+== mock check: http://127.0.0.1:18081/clean (expect example.com) ==
+[hop 1] 302 http://127.0.0.1:18081/clean  (host: 127.0.0.1)
+[hop 2] 200 https://example.com/  (host: example.com)
+Final URL: https://example.com/
+Final host: example.com
+Verdict: CLEAN
+  - final host 'example.com', no heuristic triggered
+Note: CLEAN means no heuristic fired; it is not a guarantee the destination is safe.
+
+== mock check: http://127.0.0.1:18081/hijacked (expect example.com) ==
+[hop 1] 302 http://127.0.0.1:18081/hijacked  (host: 127.0.0.1)
+[hop 2] ??? https://example-secure-login.com/  (host: example-secure-login.com) -- could not fetch: Remote end closed connection without response
+Final URL: https://example-secure-login.com/
+Final host: example-secure-login.com
+Verdict: MISMATCH
+  - final host 'example-secure-login.com' does not match expected host 'example.com'
+Note: this is a heuristic flag, not proof of hijacking. Verify the destination by hand before trusting the link.
+
